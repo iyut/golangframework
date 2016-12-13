@@ -1,0 +1,49 @@
+{
+  "Server"      : "0.0.0.0:5001",
+  "MongoDBHost" : "127.0.0.1",
+  "MongoDBUser"	: "root",
+  "MongoDBPwd"	: "pass123qwe",
+  "Database"    : "frameworkdb",
+  "LogLevel"    : 4,
+  "Database2"  : {
+    "type": "MongoDB",
+    "MongoDB": {
+      "Host": "127.0.0.1",
+      "Port": "27017",
+      "User": "root",
+      "Pwd": "pass123qwe",
+      "Database": "taskdb"
+    },
+    "MySQL": {
+      "Host": "127.0.0.1",
+      "Port": "3306",
+      "User": "root",
+      "Pwd": "pass123qwe",
+      "Database": "taskdb"
+    },
+    "Bolt": {
+ 			"Path": "joornal.db"
+  	}
+  },
+	"Email": {
+		"Username": "",
+		"Password": "",
+		"Hostname": "",
+		"Port": 25,
+		"From": ""
+	},
+	"Recaptcha": {
+		"Enabled": false,
+		"Secret": "",
+		"SiteKey": ""
+	},
+	"Server2": {
+		"Hostname": "0.0.0.0",
+		"UseHTTP": true,
+		"UseHTTPS": false,
+		"HTTPPort": 8080,
+		"HTTPSPort": 443,
+		"CertFile": "tls/server.crt",
+		"KeyFile": "tls/server.key"
+	}
+}

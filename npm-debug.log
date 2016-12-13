@@ -1,0 +1,61 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node',
+1 verbose cli   '/usr/local/bin/npm',
+1 verbose cli   'install',
+1 verbose cli   'main.go' ]
+2 info using npm@3.10.8
+3 info using node@v6.9.1
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly fetchPackageMetaData main.go
+8 silly fetchOtherPackageData main.go
+9 silly cache add args [ 'main.go', null ]
+10 verbose cache add spec main.go
+11 silly cache add parsed spec Result {
+11 silly cache add   raw: 'main.go',
+11 silly cache add   scope: null,
+11 silly cache add   escapedName: 'main.go',
+11 silly cache add   name: null,
+11 silly cache add   rawSpec: 'main.go',
+11 silly cache add   spec: '/Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go',
+11 silly cache add   type: 'local' }
+12 silly addLocalTarball shasum (computed) a77c136f27721ee3479dd18dde6b45846860d04f
+13 verbose addTmpTarball /Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go not in flight; adding
+14 verbose correctMkdir /Users/iamfd/.npm correctMkdir not in flight; initializing
+15 verbose addTmpTarball validating metadata from /Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go
+16 verbose tar unpack /Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go
+17 verbose tar unpacking to /var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29
+18 silly gentlyRm /var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29 is being purged
+19 verbose gentlyRm don't care about contents; nuking /var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29
+20 silly gunzTarPerm modes [ '755', '644' ]
+21 error not a package /Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go
+22 error addLocal Could not install /Users/iamfd/Documents/goserver/learn/framework/src/framework/main.go
+23 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json'
+23 silly fetchPackageMetaData     at Error (native)
+23 silly fetchPackageMetaData  error for main.go { Error: ENOENT: no such file or directory, open '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json'
+23 silly fetchPackageMetaData     at Error (native)
+23 silly fetchPackageMetaData   errno: -2,
+23 silly fetchPackageMetaData   code: 'ENOENT',
+23 silly fetchPackageMetaData   syscall: 'open',
+23 silly fetchPackageMetaData   path: '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json' }
+24 silly rollbackFailedOptional Starting
+25 silly rollbackFailedOptional Finishing
+26 silly runTopLevelLifecycles Finishing
+27 silly install printInstalled
+28 verbose stack Error: ENOENT: no such file or directory, open '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json'
+28 verbose stack     at Error (native)
+29 verbose cwd /Users/iamfd/Documents/goserver/learn/framework/src/framework
+30 error Darwin 16.1.0
+31 error argv "/usr/local/bin/node" "/usr/local/bin/npm" "install" "main.go"
+32 error node v6.9.1
+33 error npm  v3.10.8
+34 error path /var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json
+35 error code ENOENT
+36 error errno -2
+37 error syscall open
+38 error enoent ENOENT: no such file or directory, open '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json'
+39 error enoent ENOENT: no such file or directory, open '/var/folders/hm/br83b6j12fdgz1j01hnfmyqr0000gn/T/npm-3106-9a885b5c/unpack-7233ef29/package.json'
+39 error enoent This is most likely not a problem with npm itself
+39 error enoent and is related to npm not being able to find a file.
+40 verbose exit [ -2, true ]
