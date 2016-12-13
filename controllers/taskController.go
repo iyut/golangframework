@@ -29,14 +29,13 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	task := &dataResource.Data
-	context := data.NewContext()
-	defer context.Close()
+
 	if val, ok := httpcontext.GetOk(r, "user"); ok {
-		context.User = val.(string)
+		task.CreatedBy = val.(string)
+	}else{
+		task.CreatedBy = "noone"
 	}
-	task.CreatedBy = context.User
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+	repo := &data.TaskRepository{C: "tasks"}
 	// Insert a task document
 	repo.Create(task)
 	j, err := json.Marshal(TaskResource{Data: *task})
@@ -58,10 +57,8 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 // GetTasks returns all Task document
 // Handler for HTTP Get - "/tasks"
 func GetTasks(w http.ResponseWriter, r *http.Request) {
-	context := data.NewContext()
-	defer context.Close()
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+
+	repo := &data.TaskRepository{C: "tasks"}
 	tasks := repo.GetAll()
 	j, err := json.Marshal(TasksResource{Data: tasks})
 	if err != nil {
@@ -84,11 +81,8 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	id := vars["id"]
-	context := data.NewContext()
 
-	defer context.Close()
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+	repo := &data.TaskRepository{C: "tasks"}
 	task, err := repo.GetById(id)
 	if err != nil {
 		if err == mgo.ErrNotFound {
@@ -126,10 +120,8 @@ func GetTasksByUser(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	user := vars["id"]
-	context := data.NewContext()
-	defer context.Close()
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+
+	repo := &data.TaskRepository{C: "tasks"}
 	tasks := repo.GetByUser(user)
 	j, err := json.Marshal(TasksResource{Data: tasks})
 	if err != nil {
@@ -166,10 +158,8 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 	}
 	task := &dataResource.Data
 	task.Id = id
-	context := data.NewContext()
-	defer context.Close()
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+
+	repo := &data.TaskRepository{C: "tasks"}
 	// Update an existing Task document
 	if err := repo.Update(task); err != nil {
 		common.DisplayAppError(
@@ -189,10 +179,8 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 func DeleteTask(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
-	context := data.NewContext()
-	defer context.Close()
-	col := context.DbCollection("tasks")
-	repo := &data.TaskRepository{C: col}
+
+	repo := &data.TaskRepository{C: "tasks"}
 	// Delete an existing Task document
 	err := repo.Delete(id)
 	if err != nil {
