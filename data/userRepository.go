@@ -47,3 +47,13 @@ func (r *UserRepository) Login(user models.User) (u models.User, err error) {
 	}
 	return
 }
+
+func (r *UserRepository) Delete(id string) error {
+
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)
+
+	err := col.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+	return err
+}

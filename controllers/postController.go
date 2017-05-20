@@ -12,34 +12,34 @@ import (
 	"framework/data"
 )
 
-// CreateTask insert a new Task document
-// Handler for HTTP Post - "/tasks
-func CreateTask(w http.ResponseWriter, r *http.Request) {
-	var dataResource TaskResource
+// CreatePost insert a new Post document
+// Handler for HTTP Post - "/posts
+func CreatePost(w http.ResponseWriter, r *http.Request) {
+	var dataResource PostResource
 
-	// Decode the incoming Task json
+	// Decode the incoming Post json
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
 	if err != nil {
 		common.DisplayAppError(
 			w,
 			err,
-			"Invalid Task data",
+			"Invalid Post data",
 			500,
 		)
 		return
 	}
-	task := &dataResource.Data
+	post := &dataResource.Data
 
 	val := common.GetContextAuth(r)
 	if val != "" {
-		task.CreatedBy = val
+		post.CreatedBy = val
 	}else{
-		task.CreatedBy = "noone"
+		post.CreatedBy = "noone"
 	}
-	repo := &data.TaskRepository{C: "tasks"}
-	// Insert a task document
-	repo.Create(task)
-	j, err := json.Marshal(TaskResource{Data: *task})
+	repo := &data.PostRepository{C: "posts"}
+	// Insert a post document
+	repo.Create(post)
+	j, err := json.Marshal(PostResource{Data: *post})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -55,13 +55,13 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// GetTasks returns all Task document
-// Handler for HTTP Get - "/tasks"
-func GetTasks(w http.ResponseWriter, r *http.Request) {
+// GetPosts returns all Post document
+// Handler for HTTP Get - "/posts"
+func GetPosts(w http.ResponseWriter, r *http.Request) {
 
-	repo := &data.TaskRepository{C: "tasks"}
-	tasks := repo.GetAll()
-	j, err := json.Marshal(TasksResource{Data: tasks})
+	repo := &data.PostRepository{C: "posts"}
+	posts := repo.GetAll()
+	j, err := json.Marshal(PostsResource{Data: posts})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -76,15 +76,15 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
-// GetTaskByID returns a single Task document by id
-// Handler for HTTP Get - "/tasks/{id}"
-func GetTaskByID(w http.ResponseWriter, r *http.Request) {
+// GetPostByID returns a single Post document by id
+// Handler for HTTP Get - "/posts/{id}"
+func GetPostByID(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
-	task, err := repo.GetById(id)
+	repo := &data.PostRepository{C: "posts"}
+	post, err := repo.GetById(id)
 	if err != nil {
 		if err == mgo.ErrNotFound {
 			w.WriteHeader(http.StatusNoContent)
@@ -100,7 +100,7 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	j, err := json.Marshal(task)
+	j, err := json.Marshal(post)
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -115,16 +115,16 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
-// GetTasksByUser returns all Tasks created by a User
-// Handler for HTTP Get - "/tasks/users/{id}"
-func GetTasksByUser(w http.ResponseWriter, r *http.Request) {
+// GetPostsByUser returns all Posts created by a User
+// Handler for HTTP Get - "/posts/users/{id}"
+func GetPostsByUser(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	user := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
-	tasks := repo.GetByUser(user)
-	j, err := json.Marshal(TasksResource{Data: tasks})
+	repo := &data.PostRepository{C: "posts"}
+	posts := repo.GetByUser(user)
+	j, err := json.Marshal(PostsResource{Data: posts})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -139,30 +139,30 @@ func GetTasksByUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
-// UpdateTask update an existing Task document
-// Handler for HTTP Put - "/tasks/{id}"
-func UpdateTask(w http.ResponseWriter, r *http.Request) {
+// UpdatePost update an existing Post document
+// Handler for HTTP Put - "/posts/{id}"
+func UpdatePost(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	id := bson.ObjectIdHex(vars["id"])
-	var dataResource TaskResource
-	// Decode the incoming Task json
+	var dataResource PostResource
+	// Decode the incoming Post json
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
 	if err != nil {
 		common.DisplayAppError(
 			w,
 			err,
-			"Invalid Task data",
+			"Invalid Post data",
 			500,
 		)
 		return
 	}
-	task := &dataResource.Data
-	task.Id = id
+	post := &dataResource.Data
+	post.Id = id
 
-	repo := &data.TaskRepository{C: "tasks"}
-	// Update an existing Task document
-	if err := repo.Update(task); err != nil {
+	repo := &data.PostRepository{C: "posts"}
+	// Update an existing Post document
+	if err := repo.Update(post); err != nil {
 		common.DisplayAppError(
 			w,
 			err,
@@ -175,14 +175,14 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// DeleteTask deelete an existing Task document
-// Handler for HTTP Delete - "/tasks/{id}"
-func DeleteTask(w http.ResponseWriter, r *http.Request) {
+// DeletePost deelete an existing Post document
+// Handler for HTTP Delete - "/posts/{id}"
+func DeletePost(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
-	// Delete an existing Task document
+	repo := &data.PostRepository{C: "posts"}
+	// Delete an existing Post document
 	err := repo.Delete(id)
 	if err != nil {
 		common.DisplayAppError(

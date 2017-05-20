@@ -18,6 +18,14 @@ type (
 	AuthUserResource struct {
 		Data AuthUserModel `json:"data"`
 	}
+	// For Post/Put - /countries
+	// For Get - /countries/id
+	CountryResource struct {
+		Data models.MS_Country `json:"data"`
+	}
+	CountriesResource struct {
+		Data []models.MS_Country `json:"data"`
+	}
 	// For Post/Put - /tasks
 	// For Get - /tasks/id
 	TaskResource struct {

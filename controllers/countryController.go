@@ -14,8 +14,8 @@ import (
 
 // CreateTask insert a new Task document
 // Handler for HTTP Post - "/tasks
-func CreateTask(w http.ResponseWriter, r *http.Request) {
-	var dataResource TaskResource
+func CreateCountry(w http.ResponseWriter, r *http.Request) {
+	var dataResource CountryResource
 
 	// Decode the incoming Task json
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
@@ -23,20 +23,20 @@ func CreateTask(w http.ResponseWriter, r *http.Request) {
 		common.DisplayAppError(
 			w,
 			err,
-			"Invalid Task data",
+			"Invalid Country data",
 			500,
 		)
 		return
 	}
-	task := &dataResource.Data
+	country := &dataResource.Data
 
 	val := common.GetContextAuth(r)
 	if val != "" {
-		task.CreatedBy = val
+		country.CreatedBy = val
 	}else{
-		task.CreatedBy = "noone"
+		country.CreatedBy = "noone"
 	}
-	repo := &data.TaskRepository{C: "tasks"}
+	repo := &data.CountryRepository{C: "tasks"}
 	// Insert a task document
 	repo.Create(task)
 	j, err := json.Marshal(TaskResource{Data: *task})

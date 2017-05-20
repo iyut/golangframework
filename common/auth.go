@@ -6,12 +6,12 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"context"
 	"strings"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/dgrijalva/jwt-go/request"
-	"github.com/gorilla/context"
 )
 
 // AppClaims provides custom claim for JWT
@@ -21,9 +21,12 @@ type AppClaims struct {
 	jwt.StandardClaims
 }
 
+type AuthKey string
+
 // using asymmetric crypto/RSA keys
 // location of private/public key files
 const (
+	MyAuthKey AuthKey = "user"
 	// openssl genrsa -out app.rsa 1024
 	privKeyPath = "keys/tm.rsa"
 	// openssl rsa -in app.rsa -pubout > app.rsa.pub
@@ -82,6 +85,16 @@ func GenerateJWT(name, role string) (string, error) {
 	return ss, nil
 }
 
+func NewContextAuth(ctx context.Context, value string) context.Context {
+	return context.WithValue(ctx, MyAuthKey, value)
+}
+
+func GetContextAuth(r *http.Request ) string {
+	val := r.Context().Value(MyAuthKey).(string)
+	return val
+
+}
+
 // Authorize Middleware for validating JWT tokens
 func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
@@ -128,7 +141,10 @@ func Authorize(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	}
 	if token.Valid {
 		// Set user name to HTTP context
-		context.Set(r, "user", token.Claims.(*AppClaims).UserName)
+
+		ctx := NewContextAuth(r.Context(), token.Claims.(*AppClaims).UserName)
+		r = r.WithContext(ctx)
+
 		next(w, r)
 	} else {
 		DisplayAppError(
