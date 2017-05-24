@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"net/http"
+	"fmt"
 
 	"github.com/gorilla/mux"
 	"gopkg.in/mgo.v2"
@@ -13,11 +14,11 @@ import (
 )
 
 // CreateTask insert a new Task document
-// Handler for HTTP Post - "/tasks
+// Handler for HTTP Post - "/country
 func CreateCountry(w http.ResponseWriter, r *http.Request) {
 	var dataResource CountryResource
 
-	// Decode the incoming Task json
+	// Decode the incoming Country json
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
 	if err != nil {
 		common.DisplayAppError(
@@ -36,10 +37,10 @@ func CreateCountry(w http.ResponseWriter, r *http.Request) {
 	}else{
 		country.CreatedBy = "noone"
 	}
-	repo := &data.CountryRepository{C: "tasks"}
-	// Insert a task document
-	repo.Create(task)
-	j, err := json.Marshal(TaskResource{Data: *task})
+	repo := &data.CountryRepository{C: "MS_Country"}
+	// Insert a country document
+	repo.Create(country)
+	j, err := json.Marshal(CountryResource{Data: *country})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -56,12 +57,12 @@ func CreateCountry(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetTasks returns all Task document
-// Handler for HTTP Get - "/tasks"
-func GetTasks(w http.ResponseWriter, r *http.Request) {
-
-	repo := &data.TaskRepository{C: "tasks"}
-	tasks := repo.GetAll()
-	j, err := json.Marshal(TasksResource{Data: tasks})
+// Handler for HTTP Get - "/countries"
+func GetCountries(w http.ResponseWriter, r *http.Request) {
+fmt.Println("test ok")
+	repo := &data.CountryRepository{C: "MS_Country"}
+	countries := repo.GetAll()
+	j, err := json.Marshal(CountriesResource{Data: countries})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -77,14 +78,14 @@ func GetTasks(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetTaskByID returns a single Task document by id
-// Handler for HTTP Get - "/tasks/{id}"
-func GetTaskByID(w http.ResponseWriter, r *http.Request) {
+// Handler for HTTP Get - "/country/{id}"
+func GetCountryByID(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
-	task, err := repo.GetById(id)
+	repo := &data.CountryRepository{C: "MS_Country"}
+	country, err := repo.GetById(id)
 	if err != nil {
 		if err == mgo.ErrNotFound {
 			w.WriteHeader(http.StatusNoContent)
@@ -100,7 +101,7 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	}
-	j, err := json.Marshal(task)
+	j, err := json.Marshal(country)
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -115,16 +116,16 @@ func GetTaskByID(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
-// GetTasksByUser returns all Tasks created by a User
-// Handler for HTTP Get - "/tasks/users/{id}"
-func GetTasksByUser(w http.ResponseWriter, r *http.Request) {
+// GetCountriesByUser returns all Countries created by a User
+// Handler for HTTP Get - "/countries/users/{id}"
+func GetCountriesByUser(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	user := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
-	tasks := repo.GetByUser(user)
-	j, err := json.Marshal(TasksResource{Data: tasks})
+	repo := &data.CountryRepository{C: "MS_Country"}
+	countries := repo.GetByUser(user)
+	j, err := json.Marshal(CountriesResource{Data: countries})
 	if err != nil {
 		common.DisplayAppError(
 			w,
@@ -139,13 +140,13 @@ func GetTasksByUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(j)
 }
 
-// UpdateTask update an existing Task document
-// Handler for HTTP Put - "/tasks/{id}"
-func UpdateTask(w http.ResponseWriter, r *http.Request) {
+// UpdateTask update an existing Country  document
+// Handler for HTTP Put - "/country/{id}"
+func UpdateCountry(w http.ResponseWriter, r *http.Request) {
 	// Get id from the incoming url
 	vars := mux.Vars(r)
 	id := bson.ObjectIdHex(vars["id"])
-	var dataResource TaskResource
+	var dataResource CountryResource
 	// Decode the incoming Task json
 	err := json.NewDecoder(r.Body).Decode(&dataResource)
 	if err != nil {
@@ -157,12 +158,12 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 		)
 		return
 	}
-	task := &dataResource.Data
-	task.Id = id
+	country := &dataResource.Data
+	country.Id = id
 
-	repo := &data.TaskRepository{C: "tasks"}
-	// Update an existing Task document
-	if err := repo.Update(task); err != nil {
+	repo := &data.CountryRepository{C: "MS_Country"}
+	// Update an existing Country document
+	if err := repo.Update(country); err != nil {
 		common.DisplayAppError(
 			w,
 			err,
@@ -175,13 +176,13 @@ func UpdateTask(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// DeleteTask deelete an existing Task document
-// Handler for HTTP Delete - "/tasks/{id}"
-func DeleteTask(w http.ResponseWriter, r *http.Request) {
+// DeleteTask deelete an existing Country document
+// Handler for HTTP Delete - "/country/{id}"
+func DeleteCountry(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
-	repo := &data.TaskRepository{C: "tasks"}
+	repo := &data.CountryRepository{C: "MS_Country"}
 	// Delete an existing Task document
 	err := repo.Delete(id)
 	if err != nil {

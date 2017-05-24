@@ -69,17 +69,7 @@ type (
 		Description string        `json:"description"`
 		CreatedOn   time.Time     `json:"createdon,omitempty"`
 		Status      string        `json:"status,omitempty"`
-	}
-	MS_Regency struct {
-		Id          bson.ObjectId `bson:"_id,omitempty" json:"id"`
-		CreatedBy   string        `json:"createdby"`
-		Regency			string				`json:"regency"`
-		RegencyType string				`json:"regencytype"`
-		Province		string				`json:"province"`
-		Description string        `json:"description"`
-		CreatedOn   time.Time     `json:"createdon,omitempty"`
-		Status      string        `json:"status,omitempty"`
-	}
+	}	
 	MS_Province struct {
 		Id          bson.ObjectId `bson:"_id,omitempty" json:"id"`
 		CreatedBy   string        `json:"createdby"`

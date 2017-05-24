@@ -35,3 +35,10 @@ ERROR: 2016/12/13 15:55:18 utils.go:32: AppError]: token is expired by 1h7m22s
 ERROR: 2016/12/14 14:35:56 utils.go:32: AppError]: token is expired by 21h43m53s
 ERROR: 2016/12/14 16:49:29 utils.go:32: AppError]: token is expired by 1h53m17s
 ERROR: 2016/12/16 14:45:29 utils.go:32: AppError]: token is expired by 2m39s
+ERROR: 2017/05/24 14:49:12 utils.go:32: AppError]: no token present in request
+ERROR: 2017/05/24 14:56:16 utils.go:32: AppError]: not found
+ERROR: 2017/05/24 14:57:31 utils.go:32: AppError]: crypto/bcrypt: hashedPassword is not the hash of the given password
+ERROR: 2017/05/24 15:02:35 utils.go:32: AppError]: no token present in request
+ERROR: 2017/05/24 15:02:58 utils.go:32: AppError]: no token present in request
+ERROR: 2017/05/24 15:06:43 utils.go:32: AppError]: invalid character '"' after object key:value pair
+ERROR: 2017/05/24 15:21:55 utils.go:32: AppError]: token is expired by 3m56s

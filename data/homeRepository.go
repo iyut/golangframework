@@ -3,56 +3,89 @@ package data
 import (
 	"time"
 
-	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 
 	"framework/models"
 )
 
 type HomeRepository struct {
-	C *mgo.Collection
+	C string
 }
 
-func (r *HomeRepository) Create(note *models.TaskNote) error {
+func (r *HomeRepository) Create(home *models.MS_Home) error {
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)		
+	
 	obj_id := bson.NewObjectId()
-	note.Id = obj_id
-	note.CreatedOn = time.Now()
-	err := r.C.Insert(&note)
+	home.Id = obj_id
+	home.CreatedOn = time.Now()
+   	home.Status = "Created"	
+	
+	context.User = home.CreatedBy 	
+	err := col.Insert(&home)
 	return err
 }
 
-func (r *NoteRepository) Update(note *models.TaskNote) error {
+func (r *HomeRepository) Update(home *models.MS_Home) error {
 	// partial update on MogoDB
-	err := r.C.Update(bson.M{"_id": note.Id},
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)			
+	
+	err := col.Update(bson.M{"_id": home.Id},
 		bson.M{"$set": bson.M{
-			"description": note.Description,
+			"address":      home.Address,
+			"rt":		home.RT,
+			"description":  home.Description,
+			"createdon":    home.CreatedOn,
+			"status":      	home.Status,
+			"createdby":	home.CreatedBy,
 		}})
 	return err
 }
-func (r *NoteRepository) Delete(id string) error {
-	err := r.C.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
+func (r *HomeRepository) Delete(id string) error {
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)			
+
+	err := col.Remove(bson.M{"_id": bson.ObjectIdHex(id)})
 	return err
 }
-func (r *NoteRepository) GetByTask(id string) []models.TaskNote {
-	var notes []models.TaskNote
-	taskid := bson.ObjectIdHex(id)
-	iter := r.C.Find(bson.M{"taskid": taskid}).Iter()
-	result := models.TaskNote{}
+func (r *HomeRepository) GetAll() []models.MS_Home {
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)		
+	
+
+	var homes []models.MS_Home
+	iter := col.Find(nil).Iter()
+	result := models.MS_Home{}
 	for iter.Next(&result) {
-		notes = append(notes, result)
+		homes = append(homes, result)
 	}
-	return notes
+	return homes
 }
-func (r *NoteRepository) GetAll() []models.TaskNote {
-	var notes []models.TaskNote
-	iter := r.C.Find(nil).Iter()
-	result := models.TaskNote{}
-	for iter.Next(&result) {
-		notes = append(notes, result)
-	}
-	return notes
-}
-func (r *NoteRepository) GetById(id string) (note models.TaskNote, err error) {
-	err = r.C.FindId(bson.ObjectIdHex(id)).One(&note)
+func (r *HomeRepository) GetById(id string) (home models.MS_Home, err error) {
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)		
+	
+	err = col.FindId(bson.ObjectIdHex(id)).One(&home)
 	return
+}
+
+func (r *HomeRepository) GetByUser(user string) []models.MS_Home {
+
+	context := NewContext()
+	defer context.Close()
+	col := context.DbCollection(r.C)
+
+	var homes []models.MS_Home
+	iter := col.Find(bson.M{"createdby": user}).Iter()
+	result := models.MS_Home{}
+	for iter.Next(&result) {
+		homes = append(homes, result)
+	}
+	return homes
 }

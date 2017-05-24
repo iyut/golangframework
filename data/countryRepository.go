@@ -37,11 +37,11 @@ func (r *CountryRepository) Update(country *models.MS_Country) error {
 	// partial update on MogoDB
 	err := col.Update(bson.M{"_id": country.Id},
 		bson.M{"$set": bson.M{
-			"name":        country.Name,
+			"country":        country.Country,
 			"description": country.Description,
-			"due":         country.Due,
+			"createdon":         country.CreatedOn,
 			"status":      country.Status,
-			"tags":        country.Tags,
+			"createdby":        country.CreatedBy,
 		}})
 	return err
 }
